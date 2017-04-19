@@ -56,6 +56,15 @@
 
         <li>
 
+            <a class="apidocElementLiA" href="#apidoc.element.coffeeify.coffeeify">
+            function <span class="apidocSignatureSpan"></span>coffeeify
+            <span class="apidocSignatureSpan">(filename, options)</span>
+            </a>
+
+        </li>
+
+        <li>
+
             <a class="apidocElementLiA" href="#apidoc.element.coffeeify.compile">
             function <span class="apidocSignatureSpan">coffeeify.</span>compile
             <span class="apidocSignatureSpan">(filename, source, options, callback)</span>
@@ -87,6 +96,56 @@
 
 <div class="apidocSectionDiv">
 <h1><a href="#apidoc.module.coffeeify" id="apidoc.module.coffeeify">module coffeeify</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.coffeeify.coffeeify" id="apidoc.element.coffeeify.coffeeify">
+        function <span class="apidocSignatureSpan"></span>coffeeify
+        <span class="apidocSignatureSpan">(filename, options)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function coffeeify(filename, options) {
+    if (!isCoffee(filename)) return through();
+
+    if (typeof options === 'undefined' || options === null) options = {};
+
+    var compileOptions = {
+        sourceMap: (options._flags &amp;&amp; options._flags.debug),
+        bare: true,
+        header: false
+    };
+
+    for (var i = 0, keys = Object.keys(compileOptions); i &lt; keys.length; i++) {
+        var key = keys[i], option = options[key];
+        if (typeof option !== 'undefined' &amp;&amp; option !== null) {
+            if (option === 'false' || option === 'no' || option === '0') {
+                option = false;
+            }
+            compileOptions[key] = !!option;
+        }
+    }
+
+    var chunks = [];
+    function transform(chunk, encoding, callback) {
+        chunks.push(chunk);
+        callback();
+    }
+
+    function flush(callback) {
+        var stream = this;
+        var source = Buffer.concat(chunks).toString();
+        compile(filename, source, compileOptions, function(error, result) {
+            if (!error) stream.push(result);
+            callback(error);
+        });
+    }
+
+    return through(transform, flush);
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
 
 
     <h2>
