@@ -1,9 +1,14 @@
-# api documentation for  [coffeeify (v2.1.0)](https://github.com/jnordberg/coffeeify)  [![npm package](https://img.shields.io/npm/v/npmdoc-coffeeify.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-coffeeify) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-coffeeify.svg)](https://travis-ci.org/npmdoc/node-npmdoc-coffeeify)
+# npmdoc-coffeeify
+
+#### basic api documentation for  [coffeeify (v2.1.0)](https://github.com/jnordberg/coffeeify)  [![npm package](https://img.shields.io/npm/v/npmdoc-coffeeify.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-coffeeify) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-coffeeify.svg)](https://travis-ci.org/npmdoc/node-npmdoc-coffeeify)
+
 #### browserify plugin for coffee-script with support for mixed .js and .coffee files
 
-[![NPM](https://nodei.co/npm/coffeeify.png?downloads=true)](https://www.npmjs.com/package/coffeeify)
+[![NPM](https://nodei.co/npm/coffeeify.png?downloads=true&downloadRank=true&stars=true)](https://www.npmjs.com/package/coffeeify)
 
-[![apidoc](https://npmdoc.github.io/node-npmdoc-coffeeify/build/screenCapture.buildNpmdoc.browser._2Fhome_2Ftravis_2Fbuild_2Fnpmdoc_2Fnode-npmdoc-coffeeify_2Ftmp_2Fbuild_2Fapidoc.html.png)](https://npmdoc.github.io/node-npmdoc-coffeeify/build/apidoc.html)
+- [https://npmdoc.github.io/node-npmdoc-coffeeify/build/apidoc.html](https://npmdoc.github.io/node-npmdoc-coffeeify/build/apidoc.html)
+
+[![apidoc](https://npmdoc.github.io/node-npmdoc-coffeeify/build/screenCapture.buildCi.browser.%252Ftmp%252Fbuild%252Fapidoc.html.png)](https://npmdoc.github.io/node-npmdoc-coffeeify/build/apidoc.html)
 
 ![npmPackageListing](https://npmdoc.github.io/node-npmdoc-coffeeify/build/screenCapture.npmPackageListing.svg)
 
@@ -22,12 +27,10 @@
     "contributors": [
         {
             "name": "James Halliday",
-            "email": "mail@substack.net",
             "url": "http://substack.net"
         },
         {
             "name": "Johan Nordberg",
-            "email": "code@johan-nordberg.com",
             "url": "http://johan-nordberg.com"
         }
     ],
@@ -61,17 +64,14 @@
     "main": "index.js",
     "maintainers": [
         {
-            "name": "substack",
-            "email": "mail@substack.net"
+            "name": "substack"
         },
         {
-            "name": "jnordberg",
-            "email": "its@johan-nordberg.com"
+            "name": "jnordberg"
         }
     ],
     "name": "coffeeify",
     "optionalDependencies": {},
-    "readme": "ERROR: No README data found!",
     "repository": {
         "type": "git",
         "url": "git://github.com/jnordberg/coffeeify.git"
@@ -79,101 +79,9 @@
     "scripts": {
         "test": "tap test/*.js"
     },
-    "version": "2.1.0"
+    "version": "2.1.0",
+    "bin": {}
 }
-```
-
-
-
-# <a name="apidoc.tableOfContents"></a>[table of contents](#apidoc.tableOfContents)
-
-#### [module coffeeify](#apidoc.module.coffeeify)
-1.  [function <span class="apidocSignatureSpan">coffeeify.</span>compile (filename, source, options, callback)](#apidoc.element.coffeeify.compile)
-1.  [function <span class="apidocSignatureSpan">coffeeify.</span>isCoffee (file)](#apidoc.element.coffeeify.isCoffee)
-1.  [function <span class="apidocSignatureSpan">coffeeify.</span>isLiterate (file)](#apidoc.element.coffeeify.isLiterate)
-
-
-
-# <a name="apidoc.module.coffeeify"></a>[module coffeeify](#apidoc.module.coffeeify)
-
-#### <a name="apidoc.element.coffeeify.compile"></a>[function <span class="apidocSignatureSpan">coffeeify.</span>compile (filename, source, options, callback)](#apidoc.element.coffeeify.compile)
-- description and source-code
-```javascript
-function compile(filename, source, options, callback) {
-    var compiled;
-    try {
-        compiled = coffee.compile(source, {
-            sourceMap: options.sourceMap,
-            inline: true,
-            bare: options.bare,
-            header: options.header,
-            literate: isLiterate(filename)
-        });
-    } catch (e) {
-        var error = e;
-        if (e.location) {
-            error = new ParseError(e, source, filename);
-        }
-        callback(error);
-        return;
-    }
-
-    if (options.sourceMap) {
-        var map = convert.fromJSON(compiled.v3SourceMap);
-        var basename = path.basename(filename);
-        map.setProperty('file', basename.replace(filePattern, '.js'));
-        map.setProperty('sources', [basename]);
-        map.setProperty('sourcesContent', [source]);
-        callback(null, compiled.js + '\n' + map.toComment() + '\n');
-    } else {
-        callback(null, compiled + '\n');
-    }
-
-}
-```
-- example usage
-```shell
-...
-ParseError.prototype.inspect = function () {
-return this.annotated;
-};
-
-function compile(filename, source, options, callback) {
-var compiled;
-try {
-    compiled = coffee.compile(source, {
-        sourceMap: options.sourceMap,
-        inline: true,
-        bare: options.bare,
-        header: options.header,
-        literate: isLiterate(filename)
-    });
-} catch (e) {
-...
-```
-
-#### <a name="apidoc.element.coffeeify.isCoffee"></a>[function <span class="apidocSignatureSpan">coffeeify.</span>isCoffee (file)](#apidoc.element.coffeeify.isCoffee)
-- description and source-code
-```javascript
-function isCoffee(file) {
-    return filePattern.test(file);
-}
-```
-- example usage
-```shell
-n/a
-```
-
-#### <a name="apidoc.element.coffeeify.isLiterate"></a>[function <span class="apidocSignatureSpan">coffeeify.</span>isLiterate (file)](#apidoc.element.coffeeify.isLiterate)
-- description and source-code
-```javascript
-function isLiterate(file) {
-    return (/\.(litcoffee|coffee\.md)$/).test(file);
-}
-```
-- example usage
-```shell
-n/a
 ```
 
 
